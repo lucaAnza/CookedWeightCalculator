@@ -2,6 +2,8 @@
 
 # 🍳 Cooked Weight Calculator
 
+→ [Try it now 🔥 ](https://lucaanza.github.io/CookedWeightCalculator/) 
+
 A simple, modern, and efficient single-file web application to calculate the cooked weight of a product based on its initial uncooked and cooked weights, and a new target uncooked quantity.
 
 ## Description
