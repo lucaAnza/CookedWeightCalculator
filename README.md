@@ -1,4 +1,4 @@
-⚠️ DISMISS : ALL AI GENERATED APPLICATION
+⚠️ Dismiss AI-generated application
 
 # 🍳 Cooked Weight Calculator
 
