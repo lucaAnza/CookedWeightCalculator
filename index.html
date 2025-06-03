@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍳 Cooked Weight Calculator</title>
+    <style>
+        /* Basic Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Main Container */
+        .container {
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 8px;
+            text-align: left;
+        }
+
+        /* Input Groups & Labels */
+        .input-section, .calculation-section {
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input[type="number"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+
+        /* Preset Buttons Styling (used for all fields) */
+        .preset-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-start;
+            margin-top: 8px; /* Space between input field and its preset buttons */
+        }
+
+        .preset-btn {
+            background-color: #e9ecef;
+            color: #495057;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+            flex: 1 1 auto; /* Allow buttons to grow and shrink appropriately */
+            min-width: 55px; /* Minimum width for tapability, adjusted slightly */
+            text-align: center;
+        }
+
+        .preset-btn:hover {
+            background-color: #dee2e6;
+            border-color: #adb5bd;
+        }
+        .preset-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Main Calculate Button Styling */
+        #calculateBtn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 20px; /* Ensure good spacing before calculate button */
+        }
+
+        #calculateBtn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        #calculateBtn:active {
+            transform: translateY(0);
+        }
+
+        /* Output Section */
+        .output-section {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9f5fe;
+            border-radius: 6px;
+            border: 1px solid #c5dff8;
+            text-align: center;
+            min-height: 60px;
+            word-wrap: break-word;
+        }
+
+        #result {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1a5f7a;
+            margin-bottom: 5px;
+        }
+
+        #error {
+            font-size: 1em;
+            color: #c0392b;
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 420px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px 15px;
+            }
+            h1 {
+                font-size: 1.6em;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            .preset-btn {
+                font-size: 0.85em;
+                padding: 7px 10px;
+                min-width: 50px; /* Adjust min-width for smaller screens */
+            }
+            #calculateBtn {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+            #result {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🍳 Cooked Weight Calculator</h1>
+
+        <div class="input-section">
+            <h2>Base Product Information</h2>
+            <div class="input-group">
+                <label for="initialUncooked">Initial Uncooked Weight (g):</label>
+                <input type="number" id="initialUncooked" placeholder="e.g., 150" step="any">
+                <div class="preset-buttons-container">
+                    <button type="button" class="preset-btn" data-target-input-id="initialUncooked" data-weight="150">150</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialUncooked" data-weight="180">180</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialUncooked" data-weight="280">280</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialUncooked" data-weight="300">300</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialUncooked" data-weight="330">330</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="initialCooked">Resulting Cooked Weight (g):</label>
+                <input type="number" id="initialCooked" placeholder="e.g., 300" step="any">
+                <div class="preset-buttons-container">
+                    <button type="button" class="preset-btn" data-target-input-id="initialCooked" data-weight="150">150</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialCooked" data-weight="180">180</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialCooked" data-weight="280">280</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialCooked" data-weight="300">300</button>
+                    <button type="button" class="preset-btn" data-target-input-id="initialCooked" data-weight="330">330</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="calculation-section">
+            <h2>Calculate for New Quantity</h2>
+            <div class="input-group">
+                <label for="targetUncooked">New Uncooked Weight (g):</label>
+                <input type="number" id="targetUncooked" placeholder="e.g., 100" step="any">
+                <div class="preset-buttons-container">
+                    <button type="button" class="preset-btn" data-target-input-id="targetUncooked" data-weight="150">150</button>
+                    <button type="button" class="preset-btn" data-target-input-id="targetUncooked" data-weight="180">180</button>
+                    <button type="button" class="preset-btn" data-target-input-id="targetUncooked" data-weight="280">280</button>
+                    <button type="button" class="preset-btn" data-target-input-id="targetUncooked" data-weight="300">300</button>
+                    <button type="button" class="preset-btn" data-target-input-id="targetUncooked" data-weight="330">330</button>
+                </div>
+            </div>
+        </div>
+
+        <button id="calculateBtn" type="button">Calculate Cooked Weight</button>
+
+        <div class="output-section">
+            <p id="result"></p>
+            <p id="error"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialUncookedInput = document.getElementById('initialUncooked');
+            const initialCookedInput = document.getElementById('initialCooked');
+            // targetUncookedInput is targeted dynamically by preset buttons
+            const calculateButton = document.getElementById('calculateBtn');
+            const resultDisplay = document.getElementById('result');
+            const errorDisplay = document.getElementById('error');
+            
+            const allPresetButtons = document.querySelectorAll('.preset-btn');
+
+            calculateButton.addEventListener('click', () => {
+                resultDisplay.textContent = '';
+                errorDisplay.textContent = '';
+
+                const initialUncookedStr = initialUncookedInput.value;
+                const initialCookedStr = initialCookedInput.value;
+                const targetUncookedStr = document.getElementById('targetUncooked').value; // Get value at time of calculation
+
+                if (initialUncookedStr.trim() === '' || initialCookedStr.trim() === '' || targetUncookedStr.trim() === '') {
+                    errorDisplay.textContent = 'Please fill in all fields.';
+                    return;
+                }
+
+                const initialUncooked = parseFloat(initialUncookedStr);
+                const initialCooked = parseFloat(initialCookedStr);
+                const targetUncooked = parseFloat(targetUncookedStr);
+
+                if (isNaN(initialUncooked) || isNaN(initialCooked) || isNaN(targetUncooked)) {
+                    errorDisplay.textContent = 'Please enter valid numbers in all fields.';
+                    return;
+                }
+
+                if (initialUncooked <= 0) {
+                    errorDisplay.textContent = 'Initial uncooked weight must be greater than zero.';
+                    return;
+                }
+                if (initialCooked < 0) {
+                    errorDisplay.textContent = 'Initial cooked weight cannot be negative.';
+                    return;
+                }
+                if (targetUncooked < 0) {
+                    errorDisplay.textContent = 'Target uncooked weight cannot be negative.';
+                    return;
+                }
+
+                const ratio = initialCooked / initialUncooked;
+                const targetCooked = targetUncooked * ratio;
+
+                resultDisplay.textContent = `Calculated Cooked Weight: ${targetCooked.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}g`;
+            });
+
+            allPresetButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetInputId = button.dataset.targetInputId;
+                    const weight = button.dataset.weight;
+                    const targetInputElement = document.getElementById(targetInputId);
+
+                    if (targetInputElement) {
+                        targetInputElement.value = weight;
+                        targetInputElement.focus();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
